@@ -38,21 +38,48 @@ void PhysicsInit() {
 	ps = ParticleSystem(100);
 }
 
-void spawn(float dt) {
-	float x = nextParticleIdx * cos(angle) / 20.f;
+void spawn(float dt, glm::vec3 initPos = glm::vec3(0, 0, 0), glm::vec3 initVelocity = glm::vec3(0, 0, 0)) {
+	/*float x = nextParticleIdx * cos(angle) / 20.f;
 	float y = nextParticleIdx / 10.f;
-	float z = nextParticleIdx * sin(angle) / 20.f;
+	float z = nextParticleIdx * sin(angle) / 20.f;*/
 
-	ps.UpdateParticle(nextParticleIdx, glm::vec3(x, y, z));
+	ps.UpdateParticle(nextParticleIdx, initPos, initVelocity);
 	angle += dt * ps.emissionRate;
 
-	ps.spawnParticle(glm::vec3(x, y, z));
+	ps.spawnParticle(initPos, initVelocity);
 
 	nextParticleIdx++;
 }
 
-void PhysicsUpdate(float dt) {
+void UpdateFountain(float dt) {
 	ps.destroyOldParticles(maxAge);
+
+	if (nextParticleIdx < ps.GetMaxParticles()) {
+		spawn(dt, glm::vec3(0, 5, 0), glm::vec3((rand() % 10) - 5, 10, (rand() % 10) - 5));
+	}
+
+	ps.updateLilSpheres();
+	ps.updateAge(dt);
+	ps.UpdateSpeed(dt);
+}
+
+void UpdateCascade(float dt) {
+	ps.destroyOldParticles(maxAge);
+
+	if (nextParticleIdx < ps.GetMaxParticles()) {
+		spawn(dt, glm::vec3((rand() % 10) - 5.f, 10, 0));
+	}
+
+	ps.updateLilSpheres();
+	ps.updateAge(dt);
+	ps.UpdateSpeed(dt);
+}
+
+void PhysicsUpdate(float dt) {
+	//UpdateFountain(dt);
+	UpdateCascade(dt);
+
+	/*ps.destroyOldParticles(maxAge);
 
 	if (nextParticleIdx < ps.GetMaxParticles()) {
 		spawn(dt);
@@ -60,7 +87,10 @@ void PhysicsUpdate(float dt) {
 
 	ps.updateLilSpheres();
 	ps.updateAge(dt);
+	ps.UpdateSpeed(dt);*/
 }
+
+
 
 void PhysicsCleanup() {
 	//Exemple_PhysicsCleanup();
