@@ -92,6 +92,9 @@ void ParticleSystem::destroyOldParticles(float maxAge)
 
 void ParticleSystem::UpdateSpeed(float dt)
 {
+	glm::vec3 normal;
+	float planeD;
+	float distance;
 	for (int i = 0; i < maxParticles; i++) {
 		particles[i].prevPos = particles[i].pos;
 
@@ -100,18 +103,55 @@ void ParticleSystem::UpdateSpeed(float dt)
 		particles[i].pos += particles[i].speed * dt;
 
 		//Check collisions
-		//Fem el cross product per trobar la normal
 		//Floor
-		glm::vec3 normal = glm::normalize(CalculatePlaneNormal(boxVertex[3], boxVertex[2], boxVertex[0]));
-		float planeD = -(normal.x * boxVertex[3].x + normal.y * boxVertex[3].y + normal.z * boxVertex[3].z);
-		float distance = (abs(normal.x + normal.y + normal.z + planeD))/sqrt(pow(normal.x, 2)+ pow(normal.y, 2)+ pow(normal.z, 2));
-		if (HasCollided(particles[i].prevPos, particles[i].pos, normal, distance) && particles[i].age > 0)
+		normal = glm::normalize(CalculatePlaneNormal(boxVertex[3], boxVertex[2], boxVertex[0]));
+		planeD = -(normal.x * boxVertex[3].x + normal.y * boxVertex[3].y + normal.z * boxVertex[3].z);
+		distance = (abs(normal.x + normal.y + normal.z + planeD)) / sqrt(pow(normal.x, 2) + pow(normal.y, 2) + pow(normal.z, 2));
+		if (HasCollided(particles[i].prevPos, particles[i].pos, normal, distance))
 		{
 			particles[i].pos = particles[i].pos - (1 + bounceCoef) * (glm::dot(normal, particles[i].pos) + distance) * normal;
 			particles[i].speed = particles[i].speed - (1 + bounceCoef) * (glm::dot(normal, particles[i].speed)) * normal;
-			//printf("PrevPos: %f \n", particles[i].prevPos.y);
-			//printf("Pos: %f \n", particles[i].pos.y);
 		}
+		//Left wall
+		normal = glm::normalize(CalculatePlaneNormal(boxVertex[3], boxVertex[0], boxVertex[7]));
+		planeD = -(normal.x * boxVertex[3].x + normal.y * boxVertex[3].y + normal.z * boxVertex[3].z);
+		distance = (abs(normal.x + normal.y + normal.z + planeD)) / sqrt(pow(normal.x, 2) + pow(normal.y, 2) + pow(normal.z, 2));
+		if (HasCollided(particles[i].prevPos, particles[i].pos, normal, distance))
+		{
+			particles[i].pos = particles[i].pos - (1 + bounceCoef) * (glm::dot(normal, particles[i].pos) + distance) * normal;
+			particles[i].speed = particles[i].speed - (1 + bounceCoef) * (glm::dot(normal, particles[i].speed)) * normal;
+		}
+
+		//Right wall
+		normal = glm::normalize(CalculatePlaneNormal(boxVertex[1], boxVertex[2], boxVertex[5]));
+		planeD = -(normal.x * boxVertex[1].x + normal.y * boxVertex[1].y + normal.z * boxVertex[1].z);
+		distance = (abs(normal.x + normal.y + normal.z + planeD)) / sqrt(pow(normal.x, 2) + pow(normal.y, 2) + pow(normal.z, 2));
+		if (HasCollided(particles[i].prevPos, particles[i].pos, normal, distance))
+		{
+			particles[i].pos = particles[i].pos - (1 + bounceCoef) * (glm::dot(normal, particles[i].pos) + distance) * normal;
+			particles[i].speed = particles[i].speed - (1 + bounceCoef) * (glm::dot(normal, particles[i].speed)) * normal;
+		}
+
+		//Rear wall
+		normal = glm::normalize(CalculatePlaneNormal(boxVertex[0], boxVertex[1], boxVertex[4]));
+		planeD = -(normal.x * boxVertex[0].x + normal.y * boxVertex[0].y + normal.z * boxVertex[0].z);
+		distance = (abs(normal.x + normal.y + normal.z + planeD)) / sqrt(pow(normal.x, 2) + pow(normal.y, 2) + pow(normal.z, 2));
+		if (HasCollided(particles[i].prevPos, particles[i].pos, normal, distance))
+		{
+			particles[i].pos = particles[i].pos - (1 + bounceCoef) * (glm::dot(normal, particles[i].pos) + distance) * normal;
+			particles[i].speed = particles[i].speed - (1 + bounceCoef) * (glm::dot(normal, particles[i].speed)) * normal;
+		}
+
+		//Front wall
+		normal = glm::normalize(CalculatePlaneNormal(boxVertex[3], boxVertex[7], boxVertex[2]));
+		planeD = -(normal.x * boxVertex[3].x + normal.y * boxVertex[3].y + normal.z * boxVertex[3].z);
+		distance = (abs(normal.x + normal.y + normal.z + planeD)) / sqrt(pow(normal.x, 2) + pow(normal.y, 2) + pow(normal.z, 2));
+		if (HasCollided(particles[i].prevPos, particles[i].pos, normal, distance))
+		{
+			particles[i].pos = particles[i].pos - (1 + bounceCoef) * (glm::dot(normal, particles[i].pos) + distance) * normal;
+			particles[i].speed = particles[i].speed - (1 + bounceCoef) * (glm::dot(normal, particles[i].speed)) * normal;
+		}
+
 	}
 }
 

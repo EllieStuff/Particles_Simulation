@@ -25,7 +25,7 @@ private:
 	//std::vector<Particle> particles;
 	//int margin = 10;
 
-	int maxParticles = 200;
+	int maxParticles = 400;
 	Particle* particles;
 	glm::vec3* auxPosArr;
 	float bounceCoef = 0.2f;
@@ -37,14 +37,14 @@ private:
 	//float* age;
 
 	glm::vec3 boxVertex[8] = {
-		glm::vec3(-5.f,  1.f, -5.f),
-		glm::vec3(5.f,  1.f, -5.f),
-		glm::vec3(5.f,  1.f,  5.f),
-		glm::vec3(-5.f,  1.f,  5.f),
-		glm::vec3(-5.f, 10.f, -5.f),
-		glm::vec3(5.f, 10.f, -5.f),
-		glm::vec3(5.f, 10.f,  5.f),
-		glm::vec3(-5.f, 10.f,  5.f)
+		glm::vec3(-4.f,  1.f, -4.f),
+		glm::vec3(4.f,  1.f, -4.f),
+		glm::vec3(4.f,  1.f,  5.f),
+		glm::vec3(-4.f,  1.f,  5.f),
+		glm::vec3(-4.f, 10.f, -4.f),
+		glm::vec3(4.f, 10.f, -4.f),
+		glm::vec3(4.f, 10.f,  5.f),
+		glm::vec3(-4.f, 10.f,  5.f)
 	};
 
 public:
