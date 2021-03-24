@@ -37,14 +37,14 @@ private:
 	//float* age;
 
 	glm::vec3 boxVertex[8] = {
-		glm::vec3(-4.f,  1.f, -4.f),
-		glm::vec3(4.f,  1.f, -4.f),
-		glm::vec3(4.f,  1.f,  5.f),
-		glm::vec3(-4.f,  1.f,  5.f),
-		glm::vec3(-4.f, 10.f, -4.f),
-		glm::vec3(4.f, 10.f, -4.f),
-		glm::vec3(4.f, 10.f,  5.f),
-		glm::vec3(-4.f, 10.f,  5.f)
+		glm::vec3(-5.f,  0.f, -5.f),	//Left-Lower-Back (0)
+		glm::vec3(5.f,  0.f, -5.f),		//Right-Lower-Back(1)
+		glm::vec3(5.f,  0.f,  5.f),		//Right-Lower-Front(2)
+		glm::vec3(-5.f,  0.f,  5.f),	//Left-Lower-Front (3)
+		glm::vec3(-5.f, 10.f, -5.f),	//Left-Upper-Back (4)
+		glm::vec3(5.f, 10.f, -5.f),		//Right-Upper-Back (5)
+		glm::vec3(5.f, 10.f,  5.f),		//Right-Upper-Front (6)
+		glm::vec3(-5.f, 10.f,  5.f)		//Left-Upper-Front (7)
 	};
 
 public:
