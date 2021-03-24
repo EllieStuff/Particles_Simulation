@@ -2,6 +2,7 @@
 #include <imgui\imgui_impl_sdl_gl3.h>
 #include <glm\glm.hpp>
 #include "ParticleSystem.h"
+#include "Utils.h"
 
 //Exemple
 extern void Exemple_GUI();
@@ -14,7 +15,7 @@ ParticleSystem ps;
 float angle = 0, initialAngle = 0;
 int nextParticleIdx = 0;
 extern bool renderParticles;
-float maxAge = 6;
+float maxAge = 10;
 //float emissionRate = 4;
 
 bool show_test_window = false;
@@ -67,7 +68,7 @@ void UpdateCascade(float dt) {
 	ps.destroyOldParticles(maxAge);
 
 	if (nextParticleIdx < ps.GetMaxParticles()) {
-		spawn(dt, glm::vec3((rand() % 10) - 5.f, 10, 0));
+		spawn(dt, glm::vec3(Utils::Randomize(-5, 5), 10, Utils::Randomize(-5, 5)), glm::vec3(Utils::Randomize(-1, 1), Utils::Randomize(0, 1), Utils::Randomize(-1, 1)));
 	}
 
 	ps.updateLilSpheres();

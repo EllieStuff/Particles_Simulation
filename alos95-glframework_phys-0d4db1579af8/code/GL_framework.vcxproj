@@ -147,6 +147,7 @@ xcopy $(ProjectDir)libs\SDL2.dll $(OutDir) /y /d</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ParticleSystem.h" />
+    <ClInclude Include="src\Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

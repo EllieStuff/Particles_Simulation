@@ -93,8 +93,38 @@ void ParticleSystem::destroyOldParticles(float maxAge)
 void ParticleSystem::UpdateSpeed(float dt)
 {
 	for (int i = 0; i < maxParticles; i++) {
+		particles[i].prevPos = particles[i].pos;
+
 		particles[i].acc = gravity;
 		particles[i].speed += particles[i].acc * dt;
-		particles[i].pos += particles[i].speed * dt + (particles[i].acc * (float)pow(dt, 2)) / 2.f;
+		particles[i].pos += particles[i].speed * dt;
+
+		//Check collisions
+		//Fem el cross product per trobar la normal
+		//Floor
+		glm::vec3 normal = glm::normalize(CalculatePlaneNormal(boxVertex[3], boxVertex[2], boxVertex[0]));
+		float planeD = -(normal.x * boxVertex[3].x + normal.y * boxVertex[3].y + normal.z * boxVertex[3].z);
+		float distance = (abs(normal.x + normal.y + normal.z + planeD))/sqrt(pow(normal.x, 2)+ pow(normal.y, 2)+ pow(normal.z, 2));
+		if (HasCollided(particles[i].prevPos, particles[i].pos, normal, distance) && particles[i].age > 0)
+		{
+			particles[i].pos = particles[i].pos - (1 + bounceCoef) * (glm::dot(normal, particles[i].pos) + distance) * normal;
+			particles[i].speed = particles[i].speed - (1 + bounceCoef) * (glm::dot(normal, particles[i].speed)) * normal;
+			//printf("PrevPos: %f \n", particles[i].prevPos.y);
+			//printf("Pos: %f \n", particles[i].pos.y);
+		}
 	}
+}
+
+glm::vec3 ParticleSystem::CalculatePlaneNormal(glm::vec3 initVertex, glm::vec3 finalVertex1, glm::vec3 finalVertex2)
+{
+	glm::vec3 vector1 = finalVertex1 - initVertex;
+	glm::vec3 vector2 = finalVertex2 - initVertex;
+
+	return glm::cross(vector1, vector2);
+}
+
+bool ParticleSystem::HasCollided(glm::vec3 prevParticlePos, glm::vec3 particlePos, glm::vec3 normal, float distance)
+{
+	normal = glm::normalize(normal);
+	return ((glm::dot(normal, prevParticlePos) + distance) * (glm::dot(normal, particlePos) + distance)) <= 0;
 }

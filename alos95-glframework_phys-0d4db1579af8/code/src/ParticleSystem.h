@@ -10,6 +10,7 @@ namespace LilSpheres {
 }
 
 struct Particle {
+	glm::vec3 prevPos;
 	glm::vec3 pos;
 	glm::vec3 speed;
 	glm::vec3 acc;
@@ -27,12 +28,24 @@ private:
 	int maxParticles = 200;
 	Particle* particles;
 	glm::vec3* auxPosArr;
-	float bounceCoef = 0.6f;
+	float bounceCoef = 0.2f;
 	float fricCoef = 0.6f;
-	glm::vec3 gravity = glm::vec3(0, -9.81f, 0);
+	float mass = 1.f;
+	glm::vec3 gravity = glm::vec3(0, -9.81f * mass, 0);
 
 	//glm::vec3* positions;
 	//float* age;
+
+	glm::vec3 boxVertex[8] = {
+		glm::vec3(-5.f,  1.f, -5.f),
+		glm::vec3(5.f,  1.f, -5.f),
+		glm::vec3(5.f,  1.f,  5.f),
+		glm::vec3(-5.f,  1.f,  5.f),
+		glm::vec3(-5.f, 10.f, -5.f),
+		glm::vec3(5.f, 10.f, -5.f),
+		glm::vec3(5.f, 10.f,  5.f),
+		glm::vec3(-5.f, 10.f,  5.f)
+	};
 
 public:
 	int currParticles = 0;
@@ -54,5 +67,9 @@ public:
 	void destroyOldParticles(float maxAge);
 
 	void UpdateSpeed(float dt);
+
+	glm::vec3 CalculatePlaneNormal(glm::vec3 vertex1, glm::vec3 vertex2, glm::vec3 vertex3);
+
+	bool HasCollided(glm::vec3 prevParticlePos, glm::vec3 particlePos, glm::vec3 normal, float distance);
 
 };
