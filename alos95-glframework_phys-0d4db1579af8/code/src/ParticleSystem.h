@@ -28,7 +28,7 @@ private:
 	int maxParticles = 400;
 	Particle* particles;
 	glm::vec3* auxPosArr;
-	float bounceCoef = 0.2f;
+	float bounceCoef = 0.8f;
 	float fricCoef = 0.6f;
 	float mass = 1.f;
 	glm::vec3 gravity = glm::vec3(0, -9.81f * mass, 0);

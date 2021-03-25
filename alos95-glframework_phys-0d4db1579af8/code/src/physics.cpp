@@ -59,7 +59,7 @@ void UpdateFountain(float dt) {
 	if (nextParticleIdx < ps.GetMaxParticles()) {
 		for (int i = 0; i < ps.emissionRate; i++)
 		{
-			spawn(glm::vec3(0, 5, 0), glm::vec3((rand() % 10) - 5, 10, (rand() % 10) - 5));
+			spawn(glm::vec3(0, 0, 0), glm::vec3(Utils::Randomize(-5, 5), -20, Utils::Randomize(-5, 5)));
 		}
 	}
 
@@ -84,8 +84,8 @@ void UpdateCascade(float dt) {
 }
 
 void PhysicsUpdate(float dt) {
-	//UpdateFountain(dt);
-	UpdateCascade(dt);
+	UpdateFountain(dt);
+	//UpdateCascade(dt);
 
 	/*ps.destroyOldParticles(maxAge);
 
