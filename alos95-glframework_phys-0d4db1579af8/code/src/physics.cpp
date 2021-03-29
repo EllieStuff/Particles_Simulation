@@ -16,7 +16,7 @@ float angle = 0, initialAngle = 0;
 int nextParticleIdx = 0;
 extern bool renderParticles;
 extern bool renderSphere;
-float maxAge = 10;
+float maxAge = 5;
 //float emissionRate = 4;
 
 bool show_test_window = false;

@@ -23,17 +23,14 @@ void ParticleSystem::updateLilSpheres()
 	LilSpheres::particleCount = currParticles;
 	//float* first_float = &(positions[0].x);
 
-	std::vector<glm::vec3> auxVecArray;
-
+	std::vector<glm::vec3> enabledParticles;
 	for (int i = 0; i < maxParticles; i++) {
 		if(particles[i].enabled)
-			auxPosArr[i] = particles[i].pos;
-		else
-
+			enabledParticles.push_back(particles[i].pos);
 	}
-	float* first_float = &(auxPosArr[0].x);
+	float* first_float = &(enabledParticles[0].x);
 
-	LilSpheres::updateParticles(0, currParticles, first_float);
+	LilSpheres::updateParticles(0, enabledParticles.size(), first_float);
 }
 
 int ParticleSystem::GetMaxParticles()
