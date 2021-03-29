@@ -1,6 +1,6 @@
 #pragma once
 #include <glm\glm.hpp>
-
+#include <vector>
 
 namespace LilSpheres {
 	extern const int maxParticles;
@@ -15,9 +15,19 @@ struct Particle {
 	glm::vec3 speed;
 	glm::vec3 acc;
 	float age;
+	bool enabled = true;
 	Particle() {};
 
 };
+
+////////////////////////////////////////////////// SPHERE
+namespace Sphere {
+	extern float radius;
+	extern void setupSphere(glm::vec3 pos, float radius);
+	extern void cleanupSphere();
+	extern void updateSphere(glm::vec3 pos, float radius);
+	extern void drawSphere();
+}
 
 
 class ParticleSystem {

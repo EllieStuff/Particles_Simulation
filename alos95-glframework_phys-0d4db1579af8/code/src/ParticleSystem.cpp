@@ -23,8 +23,13 @@ void ParticleSystem::updateLilSpheres()
 	LilSpheres::particleCount = currParticles;
 	//float* first_float = &(positions[0].x);
 
+	std::vector<glm::vec3> auxVecArray;
+
 	for (int i = 0; i < maxParticles; i++) {
-		auxPosArr[i] = particles[i].pos;
+		if(particles[i].enabled)
+			auxPosArr[i] = particles[i].pos;
+		else
+
 	}
 	float* first_float = &(auxPosArr[0].x);
 
@@ -82,10 +87,11 @@ void ParticleSystem::destroyOldParticles(float maxAge)
 
 	for (int i = 0; i < currParticles; i++) {
 		if (particles[i].age > maxAge) {
-			float x = particles[i].pos.x;
+			/*float x = particles[i].pos.x;
 			float z = particles[i].pos.z;
 
-			UpdateParticle(i, glm::vec3(x, 0.1f, z), glm::vec3(0, 0, 0));
+			UpdateParticle(i, glm::vec3(x, 0.1f, z), glm::vec3(0, 0, 0));*/
+			particles[i].enabled = false;
 		}
 	}
 }

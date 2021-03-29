@@ -15,6 +15,7 @@ ParticleSystem ps;
 float angle = 0, initialAngle = 0;
 int nextParticleIdx = 0;
 extern bool renderParticles;
+extern bool renderSphere;
 float maxAge = 10;
 //float emissionRate = 4;
 
@@ -37,6 +38,9 @@ void PhysicsInit() {
 
 	renderParticles = true;
 	ps = ParticleSystem(100);
+	renderSphere = true;
+	Sphere::setupSphere(glm::vec3(-2, 5, 0), 2.f);
+	//Sphere::setupSphere(glm::vec3 pos, float radius);
 }
 
 void spawn(/*float dt,*/ glm::vec3 initPos = glm::vec3(0, 0, 0), glm::vec3 initVelocity = glm::vec3(0, 0, 0)) {
@@ -59,10 +63,11 @@ void UpdateFountain(float dt) {
 	if (nextParticleIdx < ps.GetMaxParticles()) {
 		for (int i = 0; i < ps.emissionRate; i++)
 		{
-			spawn(glm::vec3(0, 0, 0), glm::vec3(Utils::Randomize(-5, 5), -20, Utils::Randomize(-5, 5)));
+			spawn(glm::vec3(0, 0, 0), glm::vec3(Utils::Randomize(-5, 5), Utils::Randomize(-10, -15), Utils::Randomize(-5, 5)));
 		}
 	}
-
+	Sphere::updateSphere(glm::vec3(-2, 5, 0), 2.f);
+	Sphere::drawSphere();
 	ps.updateLilSpheres();
 	ps.updateAge(dt);
 	ps.UpdateSpeed(dt);
