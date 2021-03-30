@@ -1,6 +1,7 @@
 #pragma once
 #include <glm\glm.hpp>
 #include <vector>
+//#include "CircularBuffer.h"
 
 namespace LilSpheres {
 	extern const int maxParticles;
@@ -23,6 +24,7 @@ struct Particle {
 ////////////////////////////////////////////////// SPHERE
 namespace Sphere {
 	extern float radius;
+	extern glm::vec3 pos;
 	extern void setupSphere(glm::vec3 pos, float radius);
 	extern void cleanupSphere();
 	extern void updateSphere(glm::vec3 pos, float radius);
@@ -35,7 +37,7 @@ private:
 	//std::vector<Particle> particles;
 	//int margin = 10;
 
-	int maxParticles = 400;
+	int maxParticles;
 	Particle* particles;
 	glm::vec3* auxPosArr;
 	float bounceCoef = 0.8f;

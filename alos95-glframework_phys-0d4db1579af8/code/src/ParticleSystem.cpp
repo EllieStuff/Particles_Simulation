@@ -2,6 +2,7 @@
 
 ParticleSystem::ParticleSystem(int _numParticles, glm::vec3 _pos)
 {
+	maxParticles = _numParticles;
 	currParticles = _numParticles;
 	if (currParticles > maxParticles) currParticles = maxParticles;
 	particles = new Particle[maxParticles];
@@ -41,7 +42,7 @@ int ParticleSystem::GetMaxParticles()
 void ParticleSystem::spawnParticle(glm::vec3 _pos, glm::vec3 initVelocity = glm::vec3(0, 0, 0))
 {
 	if (currParticles < maxParticles) {
-		UpdateParticle(currParticles, _pos, initVelocity);
+		//UpdateParticle(currParticles, _pos, initVelocity);
 		particles[currParticles].age = 0;
 
 		currParticles++;
@@ -106,6 +107,15 @@ void ParticleSystem::UpdateSpeed(float dt)
 		particles[i].pos += particles[i].speed * dt;
 
 		//Check collisions
+		//Check particle - sphere Radius
+		normal = glm::normalize(Sphere::pos - particles[i].pos);
+		planeD = (normal.x * particles[i].pos.x + normal.y * particles[i].pos.y + normal.z * particles[i].pos.z) + 1;
+		distance = (abs(normal.x + normal.y + normal.z + planeD)) / sqrt(pow(normal.x, 2) + pow(normal.y, 2) + pow(normal.z, 2));
+		if (glm::distance(Sphere::pos, particles[i].pos) <= Sphere::radius + 0.2f && glm::distance(Sphere::pos, particles[i].pos) >= Sphere::radius - 0.2f)
+		{
+			particles[i].pos = particles[i].pos - (1 + bounceCoef) * (glm::dot(normal, particles[i].pos) + distance) * normal;
+			particles[i].speed = particles[i].speed - (1 + bounceCoef) * (glm::dot(normal, particles[i].speed)) * normal;
+		}
 		//Floor
 		normal = glm::normalize(CalculatePlaneNormal(boxVertex[3], boxVertex[2], boxVertex[0]));
 		planeD = (normal.x * boxVertex[3].x + normal.y * boxVertex[3].y + normal.z * boxVertex[3].z) - 1;

@@ -351,6 +351,7 @@ namespace Sphere {
 	GLuint sphereShaders[3];
 	GLuint sphereProgram;
 	float radius;
+	glm::vec3 pos;
 
 	const char* sphere_vertShader =
 		"#version 330\n\
@@ -432,14 +433,14 @@ void main() {\n\
 		shadersCreated = false;
 	}
 
-	void setupSphere(glm::vec3 pos, float radius) {
+	void setupSphere(glm::vec3 _pos, float radius) {
 		Sphere::radius = radius;
 		glGenVertexArrays(1, &sphereVao);
 		glBindVertexArray(sphereVao);
 		glGenBuffers(1, &sphereVbo);
 
 		glBindBuffer(GL_ARRAY_BUFFER, sphereVbo);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3, &pos, GL_DYNAMIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3, &_pos, GL_DYNAMIC_DRAW);
 		glVertexAttribPointer((GLuint)0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 		glEnableVertexAttribArray(0);
 
@@ -454,15 +455,16 @@ void main() {\n\
 
 		cleanupSphereShaderAndProgram();
 	}
-	void updateSphere(glm::vec3 pos, float radius) {
+	void updateSphere(glm::vec3 _pos, float radius) {
 		glBindBuffer(GL_ARRAY_BUFFER, sphereVbo);
 		float* buff = (float*)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
-		buff[0] = pos.x;
-		buff[1] = pos.y;
-		buff[2] = pos.z;
+		buff[0] = _pos.x;
+		buff[1] = _pos.y;
+		buff[2] = _pos.z;
 		glUnmapBuffer(GL_ARRAY_BUFFER);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		Sphere::radius = radius;
+		Sphere::pos = _pos;
 	}
 	void drawSphere() {
 		glBindVertexArray(sphereVao);
