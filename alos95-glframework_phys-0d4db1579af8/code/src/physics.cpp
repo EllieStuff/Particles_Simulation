@@ -17,7 +17,7 @@ int nextParticleIdx = 0;
 extern bool renderParticles;
 extern bool renderSphere;
 float maxAge = 3.f;
-float currTime = 0;
+float currTime = 1.f / ps.emissionRate;
 //float emissionRate = 4;
 
 bool show_test_window = false;
@@ -60,10 +60,10 @@ void spawn(/*float dt,*/ glm::vec3 initPos = glm::vec3(0, 0, 0), glm::vec3 initV
 void UpdateFountain(float dt) {
 	ps.destroyOldParticles(maxAge);
 	
-	if (currTime >= 0.1f) {
+	if (currTime >= 1.f / ps.emissionRate) {
 		currTime = 0;
 		if (nextParticleIdx < ps.GetMaxParticles()) {
-			for (int i = 0; i < ps.emissionRate; i++)
+			for (int i = 0; i < ps.particlesForEachEmission; i++)
 			{
 				spawn(glm::vec3(0, 0, 0), glm::vec3(Utils::Randomize(-5, 5), Utils::Randomize(-10, -15), Utils::Randomize(-5, 5)));
 			}

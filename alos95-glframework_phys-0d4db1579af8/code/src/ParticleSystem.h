@@ -63,7 +63,8 @@ private:
 
 public:
 	int currParticles = 0;
-	float emissionRate = 4;
+	float emissionRate = 0.2;
+	float particlesForEachEmission = 1;
 
 	ParticleSystem() {};
 	ParticleSystem(int _numParticles, glm::vec3 _pos = glm::vec3(0, 0, 0));

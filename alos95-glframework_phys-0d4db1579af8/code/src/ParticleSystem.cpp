@@ -56,7 +56,7 @@ void ParticleSystem::updateAge(float dt)
 {
 	for (int i = 0; i < currParticles; i++) {
 		particles[i].age += dt;
-		printf("Particle %i: Age %f\n", i, particles[i].age);
+		//printf("Particle %i: Age %f\n", i, particles[i].age);
 	}
 }
 
@@ -118,12 +118,18 @@ void ParticleSystem::CheckWallsCollision(int i) {
 	//Check collisions
 		//Check particle - sphere Radius
 	normal = glm::normalize(Sphere::pos - particles[i].pos);
-	planeD = (normal.x * particles[i].pos.x + normal.y * particles[i].pos.y + normal.z * particles[i].pos.z) + 1;
+	planeD = (normal.x * particles[i].pos.x + normal.y * particles[i].pos.y + normal.z * particles[i].pos.z);
 	distance = (abs(normal.x + normal.y + normal.z + planeD)) / sqrt(pow(normal.x, 2) + pow(normal.y, 2) + pow(normal.z, 2));
 	if (glm::distance(Sphere::pos, particles[i].pos) <= Sphere::radius + 0.2f && glm::distance(Sphere::pos, particles[i].pos) >= Sphere::radius - 0.2f)
 	{
+		//printf("PreCol PosX: %f \n", particles[0].pos.x);
+		//printf("PreCol PosY: %f \n", particles[0].pos.y);
+		//printf("PreCol PosZ: %f \n", particles[0].pos.z);
 		particles[i].pos = particles[i].pos - (1 + bounceCoef) * (glm::dot(normal, particles[i].pos) + distance) * normal;
 		particles[i].speed = particles[i].speed - (1 + bounceCoef) * (glm::dot(normal, particles[i].speed)) * normal;
+		//printf("PostCol PosX: %f \n", particles[0].pos.x);
+		//printf("PostCol PosY: %f \n", particles[0].pos.y);
+		//printf("PostCol PosZ: %f \n", particles[0].pos.z);
 	}
 	//Floor
 	normal = glm::normalize(CalculatePlaneNormal(boxVertex[3], boxVertex[2], boxVertex[0]));
