@@ -15,7 +15,7 @@ struct Particle {
 	glm::vec3 pos;
 	glm::vec3 speed;
 	glm::vec3 acc;
-	float age;
+	float age = 0;
 	bool enabled = true;
 	Particle() {};
 
@@ -37,7 +37,7 @@ private:
 	//std::vector<Particle> particles;
 	//int margin = 10;
 
-	int maxParticles;
+	int maxParticles = 100;
 	Particle* particles;
 	glm::vec3* auxPosArr;
 	float bounceCoef = 0.8f;
@@ -58,6 +58,8 @@ private:
 		glm::vec3(5.f, 10.f,  5.f),		//Right-Upper-Front (6)
 		glm::vec3(-5.f, 10.f,  5.f)		//Left-Upper-Front (7)
 	};
+
+	void CheckWallsCollision(int i);
 
 public:
 	int currParticles = 0;
