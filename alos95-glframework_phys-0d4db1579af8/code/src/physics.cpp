@@ -17,10 +17,10 @@ int nextParticleIdx = 0;
 extern bool renderParticles;
 extern bool renderSphere;
 extern bool renderCapsule;
-float maxAge = 6.f;
-const int INIT_PARTICLES = 100;
+float maxAge = 30.f;
+const int INIT_PARTICLES = 1000;
 float currTime = 1.f / ps.emissionRate;
-//float emissionRate = 4;
+bool emissionType = true;
 
 bool show_test_window = false;
 void GUI() {
@@ -29,8 +29,10 @@ void GUI() {
 
 	{
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);//FrameRate
-		ImGui::InputFloat("Emission Rate", &ps.emissionRate, 1.f);
-		Exemple_GUI();
+		ImGui::SliderFloat("Emission Rate", &ps.emissionRate, 0.f, 10.f);
+		ImGui::SliderFloat("Particles emmited per pulse", &ps.particlesForEachEmission, 1.f, 20.f);
+		ImGui::Checkbox("Fountain <--On / Off--> Cascade", &emissionType);
+		//Exemple_GUI();
 	}
 
 	ImGui::End();
@@ -44,16 +46,11 @@ void PhysicsInit() {
 	renderSphere = renderCapsule = true;
 	Sphere::setupSphere(glm::vec3(-2, 5, 0), 2.f);
 	Capsule::setupCapsule(glm::vec3(3, 3, 0), glm::vec3(2, 8, 0), 1.5f);
-	//Sphere::setupSphere(glm::vec3 pos, float radius);
 }
 
-void spawn(/*float dt,*/ glm::vec3 initPos = glm::vec3(0, 0, 0), glm::vec3 initVelocity = glm::vec3(0, 0, 0)) {
-	/*float x = nextParticleIdx * cos(angle) / 20.f;
-	float y = nextParticleIdx / 10.f;
-	float z = nextParticleIdx * sin(angle) / 20.f;*/
+void spawn( glm::vec3 initPos = glm::vec3(0, 0, 0), glm::vec3 initVelocity = glm::vec3(0, 0, 0)) {
 
 	ps.UpdateParticle(nextParticleIdx, initPos, initVelocity);
-	//angle += dt * ps.emissionRate;
 
 	ps.spawnParticle(initPos, initVelocity);
 
@@ -61,8 +58,6 @@ void spawn(/*float dt,*/ glm::vec3 initPos = glm::vec3(0, 0, 0), glm::vec3 initV
 }
 
 void UpdateFountain(float dt) {
-	ps.destroyOldParticles(maxAge);
-	
 	if (currTime >= 1.f / ps.emissionRate) {
 		currTime = 0;
 		if (nextParticleIdx < ps.GetMaxParticles()) {
@@ -72,47 +67,37 @@ void UpdateFountain(float dt) {
 			}
 		}
 	}
-
-	ps.updateLilSpheres();
-	ps.updateAge(dt);
-	ps.UpdateSpeed(dt);
 }
 
 void UpdateCascade(float dt) {
-	ps.destroyOldParticles(maxAge);
-
-	if (nextParticleIdx < ps.GetMaxParticles()) {
-		for (int i = 0; i < ps.emissionRate; i++)
-		{
-			spawn(glm::vec3(Utils::Randomize(-3, 1), 10.f, Utils::Randomize(-1, 1)), glm::vec3(Utils::Randomize(-1, 1), Utils::Randomize(0, 1), Utils::Randomize(-1, 1)));
+	if (currTime >= 1.f / ps.emissionRate) {
+		currTime = 0;
+		if (nextParticleIdx < ps.GetMaxParticles()) {
+			for (int i = 0; i < ps.particlesForEachEmission; i++)
+			{
+				spawn(glm::vec3(Utils::Randomize(-5, 5), 10.f, Utils::Randomize(-5, 5)), glm::vec3(Utils::Randomize(-1, 1), Utils::Randomize(0, 1), Utils::Randomize(-1, 1)));
+			}
 		}
 	}
-
-	ps.updateLilSpheres();
-	ps.updateAge(dt);
-	ps.UpdateSpeed(dt);
 }
 
 void PhysicsUpdate(float dt) {
 	currTime += dt;
+	ps.destroyOldParticles(maxAge);
 
-	UpdateFountain(dt);
-	//UpdateCascade(dt);
+	if (emissionType)
+		UpdateFountain(dt);
+	else if (!emissionType)
+		UpdateCascade(dt);
+
+	ps.updateLilSpheres();
+	ps.updateAge(dt);
+	ps.UpdateSpeed(dt);
 
 	Sphere::updateSphere(glm::vec3(-2, 5, 0), 2.f);
 	Sphere::drawSphere();
 	Capsule::updateCapsule(glm::vec3(3, 3, 0), glm::vec3(3, 7, 0), 1.5f);
 	Capsule::drawCapsule();
-
-	/*ps.destroyOldParticles(maxAge);
-
-	if (nextParticleIdx < ps.GetMaxParticles()) {
-		spawn(dt);
-	}
-
-	ps.updateLilSpheres();
-	ps.updateAge(dt);
-	ps.UpdateSpeed(dt);*/
 }
 
 
