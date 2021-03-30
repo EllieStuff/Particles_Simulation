@@ -1,6 +1,7 @@
 #pragma once
 #include <glm\glm.hpp>
 #include <vector>
+//#include "Utils.h"
 //#include "CircularBuffer.h"
 
 namespace LilSpheres {
@@ -25,10 +26,22 @@ struct Particle {
 namespace Sphere {
 	extern float radius;
 	extern glm::vec3 pos;
+
 	extern void setupSphere(glm::vec3 pos, float radius);
 	extern void cleanupSphere();
 	extern void updateSphere(glm::vec3 pos, float radius);
 	extern void drawSphere();
+}
+
+////////////////////////////////////////////////// CAPSULE
+namespace Capsule {
+	extern float radius;
+	extern glm::vec3 posA, posB;
+
+	extern void setupCapsule(glm::vec3 _pos, glm::vec3 _posB, float _radius);
+	extern void cleanupCapsule();
+	extern void updateCapsule(glm::vec3 _posA, glm::vec3 _posB, float _radius);
+	extern void drawCapsule();
 }
 
 
@@ -37,7 +50,7 @@ private:
 	//std::vector<Particle> particles;
 	//int margin = 10;
 
-	int maxParticles = 100;
+	int maxParticles = 1000;
 	Particle* particles;
 	glm::vec3* auxPosArr;
 	float bounceCoef = 0.8f;
@@ -59,11 +72,11 @@ private:
 		glm::vec3(-5.f, 10.f,  5.f)		//Left-Upper-Front (7)
 	};
 
-	void CheckWallsCollision(int i);
+	void CheckCollisions(int i);
 
 public:
 	int currParticles = 0;
-	float emissionRate = 0.2;
+	float emissionRate = 3.2f;
 	float particlesForEachEmission = 1;
 
 	ParticleSystem() {};

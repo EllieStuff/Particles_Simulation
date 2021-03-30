@@ -107,16 +107,23 @@ void ParticleSystem::UpdateSpeed(float dt)
 		particles[i].speed += particles[i].acc * dt;
 		particles[i].pos += particles[i].speed * dt;
 
-		CheckWallsCollision(i);
+		CheckCollisions(i);
 	}
 }
 
-void ParticleSystem::CheckWallsCollision(int i) {
+glm::vec3 ClosestPointOnLineSegment(glm::vec3 A, glm::vec3 B, glm::vec3 Point)
+{
+	glm::vec3 AB = B - A;
+	float t = glm::dot(Point - A, AB) / glm::dot(AB, AB);
+	return A + (glm::min(glm::max(t, 0.f), 1.f) * AB);
+}
+
+void ParticleSystem::CheckCollisions(int i) {
 	glm::vec3 normal;
 	float planeD, distance;
 
-	//Check collisions
-		//Check particle - sphere Radius
+	// Check collisions
+	//Check particle - sphere collision
 	normal = glm::normalize(Sphere::pos - particles[i].pos);
 	planeD = (normal.x * particles[i].pos.x + normal.y * particles[i].pos.y + normal.z * particles[i].pos.z);
 	distance = (abs(normal.x + normal.y + normal.z + planeD)) / sqrt(pow(normal.x, 2) + pow(normal.y, 2) + pow(normal.z, 2));
@@ -131,6 +138,25 @@ void ParticleSystem::CheckWallsCollision(int i) {
 		//printf("PostCol PosY: %f \n", particles[0].pos.y);
 		//printf("PostCol PosZ: %f \n", particles[0].pos.z);
 	}
+
+	//Check particle - capsule collision
+	glm::vec3 closestPoint =  ClosestPointOnLineSegment(Capsule::posA, Capsule::posB, particles[i].pos);
+	normal = glm::normalize(closestPoint - particles[i].pos);
+	planeD = (normal.x * particles[i].pos.x + normal.y * particles[i].pos.y + normal.z * particles[i].pos.z);
+	distance = (abs(normal.x + normal.y + normal.z + planeD)) / sqrt(pow(normal.x, 2) + pow(normal.y, 2) + pow(normal.z, 2));
+	if (glm::distance(closestPoint, particles[i].pos) <= Capsule::radius + 0.2f && glm::distance(closestPoint, particles[i].pos) >= Capsule::radius - 0.2f)
+	{
+		//printf("PreCol PosX: %f \n", particles[0].pos.x);
+		//printf("PreCol PosY: %f \n", particles[0].pos.y);
+		//printf("PreCol PosZ: %f \n", particles[0].pos.z);
+		particles[i].pos = particles[i].pos - (1 + bounceCoef) * (glm::dot(normal, particles[i].pos) + distance) * normal;
+		particles[i].speed = particles[i].speed - (1 + bounceCoef) * (glm::dot(normal, particles[i].speed)) * normal;
+		//printf("PostCol PosX: %f \n", particles[0].pos.x);
+		//printf("PostCol PosY: %f \n", particles[0].pos.y);
+		//printf("PostCol PosZ: %f \n", particles[0].pos.z);
+	}
+
+
 	//Floor
 	normal = glm::normalize(CalculatePlaneNormal(boxVertex[3], boxVertex[2], boxVertex[0]));
 	planeD = (normal.x * boxVertex[3].x + normal.y * boxVertex[3].y + normal.z * boxVertex[3].z) - 1;
