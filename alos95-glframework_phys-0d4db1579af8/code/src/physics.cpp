@@ -17,10 +17,128 @@ int nextParticleIdx = 0;
 extern bool renderParticles;
 extern bool renderSphere;
 extern bool renderCapsule;
+extern bool renderCloth;
 float maxAge = 30.f;
 const int INIT_PARTICLES = 1000;
 float currTime = 1.f / ps.emissionRate;
 bool emissionType = true;
+
+
+//namespace ClothMesh {
+//	extern void updateClothMesh(float dt);
+//	extern int numCols;
+//	extern int numRows;
+//}
+//
+//class Mesh : public ParticleSystem {
+//private:
+//	int getIndex(int row, int col) {
+//		return row * width + col;
+//	};
+//
+//public:
+//	int width, height;
+//
+//	Mesh() : Mesh(ClothMesh::numCols, ClothMesh::numRows) {};
+//	Mesh(int _width, int _height) : width(_width), height(_height), ParticleSystem(100) {
+//		float z = 0.0f;
+//
+//		// initialize mesh positions
+//		for (int row = 0; row < height; row++) {
+//			for (int col = 0; col < width; col++) {
+//				particles[getIndex(row, col)].pos = glm::vec3(row * 0.3f, col * 0.2f, z);
+//			}
+//		}
+//	}
+//
+//	glm::vec3 *getSpringForces(
+//		float k_elasticity, 
+//		float k_damping, 
+//		float rest_distance, // L
+//		glm::vec3 p1, glm::vec3 p2,
+//		glm::vec3 v1, glm::vec3 v2
+//	) {
+//		// Force applied to p1 due to a spring from p1 to p2
+//		glm::vec3 *springForces;
+//
+//		// TODO
+//		// ...
+//
+//		return springForces;
+//	}
+//
+//};
+//
+//class Solver {
+//private:
+//
+//public:
+//	Solver() {};
+//
+//	virtual void updateParticles(Mesh _mesh, glm::vec3* forces) {};
+//
+//};
+//
+//class Euler : public Solver {
+//private:
+//
+//public:
+//	Euler() {};
+//
+//	void updateParticles(Mesh _mesh, glm::vec3* forces) override {
+//
+//	}
+//
+//};
+//
+//class Verlet : public Solver {
+//private:
+//
+//public:
+//	Verlet() {};
+//
+//	void updateParticles(Mesh _mesh, glm::vec3* forces) override {
+//
+//	}
+//
+//};
+//
+//
+//Solver solver;
+//Mesh mesh;
+//
+//void PhysicsInit() {
+//	// TODO: Mirar d'on ha tret aixo del solver
+//	solver = Verlet();
+//	//solver = Euler();
+//
+//	mesh = Mesh(ClothMesh::numCols, ClothMesh::numRows);
+//	renderCloth = true;
+//
+//	// Per a provar en una mesh mes petita
+//	//mesh = Mesh(1, 2);
+//
+//	// Per a rendiritzar particules per a debugar
+//	//renderParticles = true;
+//	//LilSpheres::particleCount = mesh.width * mesh.height;
+//}
+//
+//void PhysicsUpdate(float dt) {
+//	// TODO: Posar les dades dins la funció i descomentar
+//	//glm::vec3* forces = mesh.getSpringForces(/*Passar-hi dades de la funció*/);
+//
+//	// sumar gravetat
+//
+//	//solver.updateParticles(mesh, forces);
+//
+//	//ClothMesh::updateClothMesh(&(mesh.positions[0].x));
+//	LilSpheres::updateParticles(0, mesh.width * mesh.height, &(mesh.particles[0].pos.x));
+//}
+//
+//void PhysicsCleanup() {
+//
+//}
+
 
 bool show_test_window = false;
 void GUI() {

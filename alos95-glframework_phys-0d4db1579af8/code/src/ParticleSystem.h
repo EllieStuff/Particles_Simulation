@@ -51,7 +51,6 @@ private:
 	//int margin = 10;
 
 	int maxParticles = 1000;
-	Particle* particles;
 	glm::vec3* auxPosArr;
 	float bounceCoef = 0.8f;
 	float fricCoef = 0.6f;
@@ -75,6 +74,7 @@ private:
 	void CheckCollisions(int i);
 
 public:
+	Particle* particles;
 	int currParticles = 0;
 	float emissionRate = 1.f;
 	float particlesForEachEmission = 6;
